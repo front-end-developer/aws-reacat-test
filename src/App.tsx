@@ -3,18 +3,63 @@ import logo from './logo.svg';
 import './App.css';
 import { LoginService } from './service/login-service';
 
-const loginReducer = (state, action) => {
+interface LoginActions {
+  type: string;
+}
 
-  return state;
+interface State {
+  username: string,
+  password: string,
+  isLoading: boolean,
+  isError: string,
+  isLoggedin: boolean,
+  error: boolean
 }
 
 const initialState = {
   username: '',
   password: '',
-  isLoading: '',
+  isLoading: false,
   isError: '',
-  isLoggedin: ''
+  isLoggedin: false
 }
+
+const loginReducer = (state: any, action: LoginActions) => {
+  switch (action.type) {
+    case 'login':
+      return {
+        ...state,
+        isLoading: true,
+        error: ''
+      }
+      break;
+    case 'success':
+      return {
+        ...state,
+        isLoggedin: true,
+        isLoading: false
+      }
+      break;
+    case 'error':
+      return {
+        ...state,
+        error: 'incorrect username or password',
+        isLoading: false,
+        username: '',
+        password: '',
+      }
+      break;
+    case 'logout':
+      return {
+        ...state,
+        isLoggedin: false
+      }
+      break;
+  }
+  return state;
+}
+
+
 
 // LoginPlain
 function App() {
@@ -29,18 +74,26 @@ function App() {
 
   const onSubmit = async (e:any) => {
     e.preventDefault();
+    dispatch({type: 'login'});
+
     setIsLoading(true);
     setIsError('');
 
     const result = await LoginService(username, password)
     .catch(e => {
+      dispatch({
+        type: 'error'
+      });
       setIsError('incorrect username or password');
     });
 
     if (result === 'success') {
-      setIsLoggedIn(true);
-      setPassword('');
-      setIsError('');
+      dispatch({
+        type: 'success'
+      });
+      // setIsLoggedIn(true);
+      //setPassword('');
+      //setIsError('');
     }
     
     setIsLoading(false);
@@ -53,7 +106,7 @@ function App() {
           isLoggedin ? 
           (<>
             <h1>Hello {username}!</h1>
-            <button onClick={() => { setIsLoggedIn(false) }}>Log Out</button>
+            <button onClick={() => { dispatch({type: 'logout'}) }}>Log Out</button>
           </>) : (
             <form className="form" onSubmit={onSubmit}>
             { isError && <p className="error">{ isError}</p>}
