@@ -3,12 +3,14 @@ import './App.css';
 import { HooksComponent } from './shared/components/hooks/hooks-component';
 import { LoginComponent } from './shared/components/login-component/login-component';
 import { UseCallbackHook } from './shared/components/usehooks/use-callback-hook';
+import { UseContextWithRouter } from './shared/components/usehooks/use-context-with-router';
 import { UseMemoHook } from './shared/components/usehooks/use-memo-hook';
 import { UseRefHook } from './shared/components/usehooks/use-ref-hook';
 import { UseRefHookAsVar } from './shared/components/usehooks/use-ref-hook-as-var';
 import { UseCallbackWithUseEffectHook } from './shared/components/usehooks/usecallback-with-useeffect-hook';
 import { UsehooksComponent } from './shared/components/usehooks/usehooks-component';
 import { UseLayoutEffectHook } from './shared/components/usehooks/user-layout-effect-hook';
+import { UseReducerHook } from './shared/components/usehooks/user-reducer-hook';
 
 function App() {
   const [showUseRefHookAsVar, setShowUseRefHookAsVar] = useState(true);
@@ -18,6 +20,7 @@ function App() {
         header text
       </header>
       <section>
+        <UseContextWithRouter />
         <LoginComponent />
         <UsehooksComponent />
         <HooksComponent />
@@ -38,6 +41,7 @@ function App() {
 
         <UseCallbackWithUseEffectHook />
         <UseMemoHook />
+        <UseReducerHook />
       </section>
     </div>
   );
